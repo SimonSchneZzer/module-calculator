@@ -29,14 +29,29 @@ export default function LehrveranstaltungenPage() {
   const [eintraege, setEintraege] = useState<LehrveranstaltungEintrag[]>([]);
   const [suchbegriff, setSuchbegriff] = useState<string>('');
   const [nichtBestandeneLVs, setNichtBestandeneLVs] = useState<string[]>([]);
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined' && window.localStorage.getItem('theme')) {
-      return window.localStorage.getItem('theme') as 'light' | 'dark';
+
+  // Theme: statischer Default, Anpassung im useEffect
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // einmalige Initialisierung des Themes (nur im Browser)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = window.localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        setTheme(stored);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        setTheme('dark');
+      }
     }
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  });
+  }, []);
+
+  // Theme switch Effect: setzt data-theme und speichert in localStorage
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('theme', theme);
+    }
+  }, [theme]);
 
   // 1) Daten laden & Map erstellen
   useEffect(() => {
@@ -107,12 +122,6 @@ export default function LehrveranstaltungenPage() {
     );
     setGesperrteLVs(gesperrte);
   }, [nichtBestandeneLVs, eintraege, moduleMap]);
-
-  // 5) Theme-Switch
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    window.localStorage.setItem('theme', theme);
-  }, [theme]);
 
   const SunIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
