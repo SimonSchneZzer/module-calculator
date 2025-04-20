@@ -107,17 +107,3 @@
     background-color: transparent;
     border: 1px solid transparent;
 }
-
-/* Light Mode: blaue Bubble */
-:global(html[data-theme="light"] .bubble) {
-    background-color: rgba(0, 112, 244, 0.1);
-    border: 1px solid rgba(0, 112, 244, 0.6);
-    color: var(--foreground);
-}
-
-/* Dark Mode: orange Bubble */
-:global(html[data-theme="dark"] .bubble) {
-    background-color: rgba(255, 140, 0, 0.1);
-    border: 1px solid rgba(255, 140, 0, 0.6);
-    color: var(--foreground);
-}
