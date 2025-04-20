@@ -1,0 +1,176 @@
+[
+  {
+    "Modul": "MA1",
+    "Lehrveranstaltungen": ["Lineare Algebra"],
+    "dependentModules": ["WG1", "WG2", "WG3", "WG4", "PI2"]
+  },
+  {
+    "Modul": "MA2",
+    "Lehrveranstaltungen": ["Analysis"],
+    "dependentModules": ["WG1", "WG2", "WG3", "WG4", "PI2"]
+  },
+  {
+    "Modul": "PR1",
+    "Lehrveranstaltungen": ["Einführung Programmierung"],
+    "dependentModules": ["PR2"]
+  },
+  {
+    "Modul": "PR2",
+    "Lehrveranstaltungen": ["Algorithmen und Datenstrukturen"],
+    "dependentModules": ["WG1", "WG2", "WG3", "WG4", "SE1", "PI2", "WP2A Native Mobile Applications", "MP1"]
+  },
+  {
+    "Modul": "MM1",
+    "Lehrveranstaltungen": ["Einführung Multimedia", "Einführung Computernetzwerke"],
+    "dependentModules": ["WW1", "WW2"]
+  },
+  {
+    "Modul": "WP1",
+    "Lehrveranstaltungen": ["Webprogrammierung 1", "Einführung Datenbanken"],
+    "dependentModules": ["WP2", "WW1", "WW2", "WW3", "WW4"]
+  },
+  {
+    "Modul": "KRM",
+    "Lehrveranstaltungen": ["Grundlagen Mediengestaltung", "3D Prototyping und Scripting", "Konzeptentwicklung"],
+    "dependentModules": ["MP2", "WW2", "WW4"]
+  },
+  {
+    "Modul": "KOM",
+    "Lehrveranstaltungen": ["Technical Englisch", "Personaler Reflexionsprozess 1"],
+    "dependentModules": ["WAR"]
+  },
+  {
+    "Modul": "WP2",
+    "Lehrveranstaltungen": ["Webprogrammierung 2"],
+    "dependentModules": ["WW1", "WW2", "WW3", "WW4", "MP2 Web"]
+  },
+  {
+    "Modul": "MM2",
+    "Lehrveranstaltungen": ["Grundlagen Game Development", "Grundlagen Human-Computer Interaction"],
+    "dependentModules": ["WG1", "MP2 Game"]
+  },
+  {
+    "Modul": "MP1",
+    "Lehrveranstaltungen": ["Multimediaprojekt 1 (MMP1)"],
+    "dependentModules": ["WG1", "WG2", "WG3", "WG4", "WW1", "WW2", "WW3", "WW4", "MP2", "Achtung: Kein Fachbereich im 3. und 4. Semester ohne MMP1"]
+  },
+  {
+    "Modul": "PI1",
+    "Lehrveranstaltungen": ["Grundlagen Betriebssysteme", "Praxis SW Development Tools"],
+    "dependentModules": ["WG1", "WG2", "WG3", "WG4", "WW1", "WW2", "WW3", "WW4", "MP2"]
+  },
+  {
+    "Modul": "KOM",
+    "Lehrveranstaltungen": ["Einführung Präsentationstechniken", "Personaler Reflexionsprozess 2"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "PI2",
+    "Lehrveranstaltungen": ["Grundlagen Machine Learning", "Kryptographie und Datensicherheit"],
+    "dependentModules": ["WP2B Praxis Machine Learning", "WP2B Ethical Hacking"]
+  },
+  {
+    "Modul": "SE1",
+    "Lehrveranstaltungen": ["Software Design Patterns", "Software Projektmanagement"],
+    "dependentModules": ["SE2", "MP2b"]
+  },
+  {
+    "Modul": "MP2",
+    "Lehrveranstaltungen": [
+      "Multimediaprojekt 2 (MMP2a)",
+      "Teamorientierter Reflexionsprozess 1",
+      "MMP2b Concept & Pitch",
+      "MMP2b Implementation",
+      "MMP2b Evaluation und User Testing",
+      "Teamorientierter Reflexionsprozess 2",
+      "Interdisciplinary Hackathon",
+      "Multimediaprojekt 3: Kickoff"
+    ],
+    "dependentModules": ["VPR", "MP3"]
+  },
+  {
+    "Modul": "WAR",
+    "Lehrveranstaltungen": ["Wissenschaftliches Arbeiten und Forschungsmethoden", "Seminararbeit aus Informatik"],
+    "dependentModules": ["BAB", "VPR"]
+  },
+  {
+    "Modul": "SE2",
+    "Lehrveranstaltungen": ["Software Architektur", "Concurrent and Distributed Systems"],
+    "dependentModules": ["MP3"]
+  },
+  {
+    "Modul": "WG1",
+    "Lehrveranstaltungen": ["Game Development 1"],
+    "dependentModules": ["WG3"]
+  },
+  {
+    "Modul": "WG2",
+    "Lehrveranstaltungen": ["Computergrafik 1", "Computer Vision"],
+    "dependentModules": ["WG4"]
+  },
+  {
+    "Modul": "WG3",
+    "Lehrveranstaltungen": ["Game Development 2"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WG4",
+    "Lehrveranstaltungen": ["Computergrafik 2", "Game Production Environments"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WW1",
+    "Lehrveranstaltungen": ["Backend Development", "Content Management Systeme"],
+    "dependentModules": ["WW3"]
+  },
+  {
+    "Modul": "WW2",
+    "Lehrveranstaltungen": ["Frontend Development", "Web Operations", "Interface Design"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WW3",
+    "Lehrveranstaltungen": ["Fullstack Development"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WW4",
+    "Lehrveranstaltungen": ["Cloud Operations", "Human-Centered Design"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "BPR",
+    "Lehrveranstaltungen": ["Berufspraktikum", "Berufspraktikum: Begleitlehrveranstaltung"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "VPR",
+    "Lehrveranstaltungen": ["Bachelorarbeit: Themenfindung und F-Design", "Multimediaprojekt 3: Pre-Production"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "BAB",
+    "Lehrveranstaltungen": ["Medien, Technik und Gesellschaft", "Bachelorarbeit und Begleitlehrveranst.", "Bachelorprüfung"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "MP3",
+    "Lehrveranstaltungen": ["Multimediaprojekt 3", "Teamorientierter Reflexionsprozess 3"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WUR",
+    "Lehrveranstaltungen": ["Unternehmerische Grundlagen und Recht", "Gastvorträge"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WG5",
+    "Lehrveranstaltungen": ["Business of Games", "Augmented & Virtual Reality", "Ausgewählte Kapitel Game"],
+    "dependentModules": []
+  },
+  {
+    "Modul": "WW5",
+    "Lehrveranstaltungen": ["Business of Web", "Information Retrieval", "Ausgewählte Kapitel Web"],
+    "dependentModules": []
+  }
+]
