@@ -136,7 +136,6 @@ export default function LehrveranstaltungenPage() {
     if (bBlocked - aBlocked !== 0) {
       return bBlocked - aBlocked;
     }
-    // beide gleich im Block-Status -> alphabetisch
     return a.lehrveranstaltung.localeCompare(b.lehrveranstaltung, 'de', { sensitivity: 'base' });
   });
 
