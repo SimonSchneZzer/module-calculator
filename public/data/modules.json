@@ -435,17 +435,17 @@
     "semester": 5,
     "dependentModules": []
   },
-  "Bachelorarbeit und Begleitlehrveranst.": {
+  "Bachelorarbeit und Begleitlehrveranstaltung": {
     "Modul": "BAB",
-    "semester": 5,
+    "semester": 6,
     "dependentModules": []
   },
   "Bachelorprüfung": {
     "Modul": "BAB",
-    "semester": 5,
+    "semester": 6,
     "dependentModules": []
   },
-  "Multimediaprojekt 3": {
+  "Multimediaprojekt 3 (MMP3)": {
     "Modul": "MP3",
     "semester": 6,
     "dependentModules": []
@@ -475,7 +475,7 @@
     "semester": 6,
     "dependentModules": []
   },
-  "Ausgewählte Kapitel Game": {
+  "Ausgewählte Kapitel aus Game Development": {
     "Modul": "WG5",
     "semester": 6,
     "dependentModules": []
@@ -490,7 +490,7 @@
     "semester": 6,
     "dependentModules": []
   },
-  "Ausgewählte Kapitel Web": {
+  "Ausgewählte Kapitel aus Web & Mobile Development": {
     "Modul": "WW5",
     "semester": 6,
     "dependentModules": []

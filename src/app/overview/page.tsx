@@ -156,7 +156,7 @@ export default function LehrveranstaltungenPage() {
 
   return (
     <>
-      <p>Wähle die Fächer aus, die du nicht geschafft hast, um alle Kurse rekursiv angezeigt zu bekommen, die du dadurch nicht besuchen darfst.</p>
+      <p>Wähle die Fächer aus, die du nicht geschafft hast, um alle direkt und indirekt gesperrten Kurse zu sehen.</p> 
       {/* Suchfeld + Filter-Button nebeneinander */}
       <div className={styles.searchFilterWrapper}>
         <div className={styles.searchContainer}>
