@@ -179,7 +179,7 @@
       "MP2"
     ]
   },
-  "Praxis SW Development Tools": {
+  "Praxis Software Development Tools": {
     "Modul": "PI1",
     "semester": 2,
     "dependentModules": [
@@ -252,25 +252,25 @@
       "MP3"
     ]
   },
-  "MMP2b Concept & Pitch": {
+  "Multimediaprojekt 2 (MMP2b): Concept and Pitch": {
     "Modul": "MP2",
-    "semester": 3,
+    "semester": 4,
     "dependentModules": [
       "VPR",
       "MP3"
     ]
   },
-  "MMP2b Implementation": {
+  "Multimediaprojekt 2 (MMP2b): Implementation": {
     "Modul": "MP2",
-    "semester": 3,
+    "semester": 4,
     "dependentModules": [
       "VPR",
       "MP3"
     ]
   },
-  "MMP2b Evaluation und User Testing": {
+  "Multimediaprojekt 2 (MMP2b): Evaluation and User Testing": {
     "Modul": "MP2",
-    "semester": 3,
+    "semester": 4,
     "dependentModules": [
       "VPR",
       "MP3"
@@ -278,7 +278,7 @@
   },
   "Teamorientierter Reflexionsprozess 2": {
     "Modul": "MP2",
-    "semester": 3,
+    "semester": 4,
     "dependentModules": [
       "VPR",
       "MP3"
@@ -286,7 +286,7 @@
   },
   "Interdisciplinary Hackathon": {
     "Modul": "MP2",
-    "semester": 3,
+    "semester": 4,
     "dependentModules": [
       "VPR",
       "MP3"
@@ -332,7 +332,7 @@
   },
   "Game Development 1": {
     "Modul": "WG1",
-    "semester": 1,
+    "semester": 3,
     "dependentModules": [
       "WG3"
     ]
@@ -346,7 +346,7 @@
   },
   "Computer Vision": {
     "Modul": "WG2",
-    "semester": 1,
+    "semester": 3,
     "dependentModules": [
       "WG4"
     ]
@@ -395,7 +395,7 @@
     "semester": 3,
     "dependentModules": []
   },
-  "Fullstack Development": {
+  "Full stack Development": {
     "Modul": "WW3",
     "semester": 4,
     "dependentModules": []
@@ -420,7 +420,7 @@
     "semester": 5,
     "dependentModules": []
   },
-  "Bachelorarbeit: Themenfindung und F-Design": {
+  "Bachelorarbeit: Themenfindung und Forschungsdesign": {
     "Modul": "VPR",
     "semester": 5,
     "dependentModules": []
