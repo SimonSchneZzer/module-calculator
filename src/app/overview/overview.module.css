@@ -1,7 +1,8 @@
-    .searchContainer {
-        position: relative;
-        width: 100%;
-    }
+.searchContainer {
+    position: relative;
+    flex: 1;              /* nimmt verbleibenden Raum ein */
+    margin: 0;            /* keine extra margin */
+  }
 
     .searchInput {
         width: 100%;
@@ -40,8 +41,113 @@
         align-items: center;
         justify-content: center;
         pointer-events: none;
-        /* Icon ist nicht klickbar */
         z-index: 1;
+    }
+
+    .searchFilterWrapper {
+        display: flex;
+        gap: 1rem;            /* Abstand zwischen Suchfeld und Button */
+        align-items: center;  /* vertikal zentriert */
+      }
+      
+
+    /* Filter‑Button */
+    .filterButton {
+        flex: 0 0 auto;       /* nicht wachsen, nicht schrumpfen */
+        width: auto;          /* keine 100% mehr */
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(120,120,120,0.4);
+        background: var(--background);
+        color: var(--foreground);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+
+
+      .filterButton:hover {
+        background-color: rgba(120,120,120,0.05);
+        border-color: rgba(120,120,120,0.6);
+      }
+
+    /* Modal‑Overlay */
+    .modalOverlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        backdrop-filter: blur(4px);
+    }
+
+    /* Modal‑Fenster */
+    .modalWindow {
+        background: var(--background);
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 90%;
+        width: 320px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Titel */
+    .modalTitle {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--foreground);
+        border-bottom: 1px solid rgba(120, 120, 120, 0.2);
+        padding-bottom: 0.5rem;
+    }
+
+    .dropdownMenu {
+        margin: 0.5rem 0 1rem;
+        background: var(--background);
+        border: none;
+        max-height: 12rem;
+        overflow-y: auto;
+    }
+
+    .dropdownItem {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.1s;
+    }
+
+    .dropdownItem:hover {
+        background-color: rgba(120, 120, 120, 0.1);
+    }
+
+    .dropdownItem input[type="checkbox"] {
+        width: 1rem;
+        height: 1rem;
+        accent-color: var(--foreground);
+    }
+
+    .modalClose {
+        align-self: flex-end;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        border: 1px solid rgba(120, 120, 120, 0.3);
+        border-radius: 6px;
+        background: var(--background);
+        color: var(--foreground);
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .modalClose:hover {
+        background-color: rgba(120, 120, 120, 0.05);
     }
 
     .bubbles {
@@ -102,7 +208,6 @@
         color: var(--foreground);
     }
 
-    /* default (wird global überschrieben) */
     .blocked {
         background-color: rgba(255, 140, 0, 0.15);
         border: 1px solid rgba(255, 140, 0, 0.6);
