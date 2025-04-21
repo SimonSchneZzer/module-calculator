@@ -332,38 +332,38 @@
   },
   "Game Development 1": {
     "Modul": "WG1",
-    "semester": null,
+    "semester": 1,
     "dependentModules": [
       "WG3"
     ]
   },
   "Computergrafik 1": {
     "Modul": "WG2",
-    "semester": null,
+    "semester": 3,
     "dependentModules": [
       "WG4"
     ]
   },
   "Computer Vision": {
     "Modul": "WG2",
-    "semester": null,
+    "semester": 1,
     "dependentModules": [
       "WG4"
     ]
   },
   "Game Development 2": {
     "Modul": "WG3",
-    "semester": null,
+    "semester": 4,
     "dependentModules": []
   },
   "Computergrafik 2": {
     "Modul": "WG4",
-    "semester": null,
+    "semester": 4,
     "dependentModules": []
   },
   "Game Production Environments": {
     "Modul": "WG4",
-    "semester": null,
+    "semester": 4,
     "dependentModules": []
   },
   "Backend Development": {

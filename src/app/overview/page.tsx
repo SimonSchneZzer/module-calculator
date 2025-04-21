@@ -25,13 +25,11 @@ export default function LehrveranstaltungenPage() {
   const [gesperrteLVs, setGesperrteLVs] = useState<Set<string>>(new Set());
   const [suchbegriff, setSuchbegriff] = useState<string>('');
   const [nichtBestandeneLVs, setNichtBestandeneLVs] = useState<string[]>([]);
-
-  // Dropdown-Status und Auswahl
   const [selectedSemesters, setSelectedSemesters] = useState<number[]>([]);
   const [semOpen, setSemOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Theme Logic
+  // Theme Logic (unverändert, siehe vorher)
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -44,7 +42,7 @@ export default function LehrveranstaltungenPage() {
     if (typeof window !== 'undefined') localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // close dropdown on outside click
+  // Outside click → schließt Semester‑Modal
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -70,7 +68,9 @@ export default function LehrveranstaltungenPage() {
           dependentModules: (info.dependentModules ?? info.Voraussetzung) as string[],
           semester: info.semester,
         });
-        if (!(info.Modul in depsMap)) depsMap[info.Modul] = (info.dependentModules ?? info.Voraussetzung) as string[];
+        if (!(info.Modul in depsMap)) {
+          depsMap[info.Modul] = (info.dependentModules ?? info.Voraussetzung) as string[];
+        }
       });
       setEintraege(entries);
       setModuleDeps(depsMap);
@@ -78,62 +78,100 @@ export default function LehrveranstaltungenPage() {
     fetchData();
   }, []);
 
-  // Toggle Auswahl
-  const toggleLvAuswahl = (lvName: string) =>
-    setNichtBestandeneLVs(prev => prev.includes(lvName) ? prev.filter(l => l !== lvName) : [...prev, lvName]);
+  // 2) Toggle Auswahl
+  const toggleLvAuswahl = (lv: string) =>
+    setNichtBestandeneLVs(prev =>
+      prev.includes(lv) ? prev.filter(x => x !== lv) : [...prev, lv]
+    );
 
-  // Semester-Optionen (nur Zahlen)
+  // Semester‑Optionen ermitteln
   const semesterOptions = Array.from(
     new Set(eintraege.map(e => e.semester).filter((s): s is number => typeof s === 'number'))
   ).sort((a, b) => a - b);
 
-  // Sperrlogik
+  // 4) Sperrlogik (unverändert)
   useEffect(() => {
     const failed = nichtBestandeneLVs
       .map(name => eintraege.find(e => e.lehrveranstaltung === name))
-      .filter((e): e is LehrveranstaltungEintrag => Boolean(e));
+      .filter((e): e is LehrveranstaltungEintrag => !!e);
+
     const blocked = new Set<string>();
+    // Geschwister in anderem Semester sperren
     failed.forEach(f => {
       eintraege.forEach(e => {
-        if (e.modul === f.modul && f.semester != null && e.semester != null && e.semester !== f.semester) blocked.add(e.lehrveranstaltung);
+        if (
+          e.modul === f.modul &&
+          f.semester != null &&
+          e.semester != null &&
+          e.semester !== f.semester
+        ) {
+          blocked.add(e.lehrveranstaltung);
+        }
       });
     });
+    // Kind‑Module rekursiv
     const visited = new Set<string>();
     const queue = failed.map(f => f.modul);
     while (queue.length) {
       const mod = queue.shift()!;
-      (moduleDeps[mod] || []).forEach(child => {
-        if (!visited.has(child)) { visited.add(child); queue.push(child); }
+      (moduleDeps[mod] ?? []).forEach(child => {
+        if (!visited.has(child)) {
+          visited.add(child);
+          queue.push(child);
+        }
       });
     }
     eintraege.forEach(e => visited.has(e.modul) && blocked.add(e.lehrveranstaltung));
     setGesperrteLVs(blocked);
   }, [nichtBestandeneLVs, eintraege, moduleDeps]);
 
-  // Filter + Sort
+  // 5) Filter + Sortierung
   const gefiltert = eintraege.filter(e =>
     !nichtBestandeneLVs.includes(e.lehrveranstaltung) &&
-    (e.lehrveranstaltung.toLowerCase().includes(suchbegriff.toLowerCase()) || e.modul.toLowerCase().includes(suchbegriff.toLowerCase())) &&
+    (e.lehrveranstaltung.toLowerCase().includes(suchbegriff.toLowerCase()) ||
+      e.modul.toLowerCase().includes(suchbegriff.toLowerCase())) &&
     (selectedSemesters.length === 0 || (e.semester != null && selectedSemesters.includes(e.semester)))
   );
+
   const sortedList = [...gefiltert].sort((a, b) => {
+    // a) gesperrt oben
     const aB = gesperrteLVs.has(a.lehrveranstaltung) ? 1 : 0;
     const bB = gesperrteLVs.has(b.lehrveranstaltung) ? 1 : 0;
     if (bB - aB) return bB - aB;
-    return a.lehrveranstaltung.localeCompare(b.lehrveranstaltung, 'de');
+    // b) nach Semester
+    const semA = a.semester ?? Number.MAX_SAFE_INTEGER;
+    const semB = b.semester ?? Number.MAX_SAFE_INTEGER;
+    if (semA !== semB) return semA - semB;
+    // c) dann alphabetisch
+    return a.lehrveranstaltung.localeCompare(b.lehrveranstaltung, 'de', { sensitivity: 'base' });
   });
+
+  // 6) Gruppieren nach Semester
+  const grouped = sortedList.reduce((acc, curr) => {
+    const key = curr.semester ?? 0;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(curr);
+    return acc;
+  }, {} as Record<number, LehrveranstaltungEintrag[]>);
 
   return (
     <>
+      {/* Suchfeld + Filter-Button nebeneinander */}
       <div className={styles.searchFilterWrapper}>
-        {/* Suche */}
         <div className={styles.searchContainer}>
           <input
-            type="text" placeholder="Suche..." value={suchbegriff}
-            onChange={e => setSuchbegriff(e.target.value)} className={styles.searchInput}
+            type="text"
+            placeholder="Suche..."
+            value={suchbegriff}
+            onChange={e => setSuchbegriff(e.target.value)}
+            className={styles.searchInput}
           />
           {suchbegriff ? (
-            <button className={styles.clearButton} onClick={() => setSuchbegriff('')} aria-label="Löschen">×</button>
+            <button
+              className={styles.clearButton}
+              onClick={() => setSuchbegriff('')}
+              aria-label="Löschen"
+            >×</button>
           ) : (
             <div className={styles.searchIcon} aria-hidden>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
@@ -142,17 +180,41 @@ export default function LehrveranstaltungenPage() {
             </div>
           )}
         </div>
-
-        {/* Filter Button */}
-        <button onClick={() => setSemOpen(true)} className={styles.filterButton}>
+        <button
+          className={styles.filterButton}
+          onClick={() => setSemOpen(true)}
+        >
           {selectedSemesters.length
             ? `Semester: ${selectedSemesters.join(', ')}`
             : 'Alle Semester'}
         </button>
       </div>
 
+      <div className={styles.bubbles}>
+      {nichtBestandeneLVs.map((lv, i) => {
+        const modName = eintraege.find(e => e.lehrveranstaltung === lv)?.modul;
+        return (
+          <span
+            key={i}
+            className={`${styles.bubble} bubble`}
+            onClick={() => toggleLvAuswahl(lv)}
+          >
+            {lv}{modName ? ` (${modName})` : ''}
+            <button
+              className={`${styles.bubbleClose} bubbleClose`}
+              onClick={e => {
+                e.stopPropagation();
+                toggleLvAuswahl(lv);
+              }}
+            >
+              ×
+            </button>
+          </span>
+        );
+      })}
+    </div>
 
-      {/* Modal für Semester-Filter */}
+      {/* Modal für Semester */}
       {semOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalWindow} ref={dropdownRef}>
@@ -173,35 +235,42 @@ export default function LehrveranstaltungenPage() {
                 </label>
               ))}
             </div>
-            <button className={styles.modalClose} onClick={() => setSemOpen(false)}>Übernehmen</button>
+            <button
+              className={styles.modalClose}
+              onClick={() => setSemOpen(false)}
+            >Schließen</button>
           </div>
         </div>
       )}
 
-      {/* Bubbles */}
-      <div className={styles.bubbles}>
-        {nichtBestandeneLVs.map((lv, i) => {
-          const mod = eintraege.find(e => e.lehrveranstaltung === lv)?.modul;
-          return (
-            <span key={i} className={`${styles.bubble} bubble`} onClick={() => toggleLvAuswahl(lv)}>
-              {lv}{mod ? ` (${mod})` : ''}
-              <button className={`${styles.bubbleClose} bubbleClose`} onClick={e => { e.stopPropagation(); toggleLvAuswahl(lv); }}>×</button>
-            </span>
-          );
-        })}
-      </div>
-
-      {/* Liste */}
-      <ul className={styles.list}>
-        {sortedList.map((e, idx) => (
-          <li key={idx} className={`${styles.item} ${gesperrteLVs.has(e.lehrveranstaltung) ? `${styles.blocked} blocked` : ''}`} onClick={() => toggleLvAuswahl(e.lehrveranstaltung)}>
-            <p><strong>{e.lehrveranstaltung}</strong></p>
-            <p>Modul: {e.modul}</p>
-            <p>Abhängige Module: {e.dependentModules.length ? e.dependentModules.join(', ') : 'Keine'}</p>
-            <p>Semester: {e.semester ?? '–'}</p>
-          </li>
+      {/* Ausgabe pro Semester-Gruppe */}
+      {Object.keys(grouped)
+        .sort((a, b) => Number(a) - Number(b))
+        .map(key => (
+          <section key={key}>
+            {Number(key) !== 0 && (
+              <h2 className={styles.semesterHeading}>Semester {key}</h2>
+            )}
+            <ul className={styles.list}>
+              {grouped[Number(key)].map((e, i) => (
+                <li
+                  key={i}
+                  className={`${styles.item} ${
+                    gesperrteLVs.has(e.lehrveranstaltung) ? `${styles.blocked} blocked` : ''
+                  }`}
+                  onClick={() => toggleLvAuswahl(e.lehrveranstaltung)}
+                >
+                  <p><strong>{e.lehrveranstaltung}</strong></p>
+                  <p>Modul: {e.modul}</p>
+                  <p>
+                    Abhängige Module:{' '}
+                    {e.dependentModules.length ? e.dependentModules.join(', ') : 'Keine'}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
         ))}
-      </ul>
     </>
   );
 }
