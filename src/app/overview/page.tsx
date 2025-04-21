@@ -100,11 +100,15 @@ export default function LehrveranstaltungenPage() {
         e.modul.toLowerCase().includes(suchbegriff.toLowerCase()))
   );
 
-  // 4) Sperrlogik
+  // 4) Sperrlogik: nur Kind-Module blocken, Geschwister bleiben verfügbar
   useEffect(() => {
-    const basisModule = nichtBestandeneLVs
+    const basisModules = nichtBestandeneLVs
       .map((lv) => eintraege.find((e) => e.lehrveranstaltung === lv)?.modul)
       .filter((m): m is string => Boolean(m));
+
+    const startChildren = basisModules.flatMap(
+      (modName) => moduleMap.get(modName)?.dependentModules || []
+    );
 
     const gesperrtModule = new Set<string>();
     const findDeps = (mods: string[]) => {
@@ -115,14 +119,26 @@ export default function LehrveranstaltungenPage() {
         if (children.length) findDeps(children);
       });
     };
-    findDeps(basisModule);
+    findDeps(startChildren);
 
     const gesperrte = new Set(
-      eintraege.filter((e) => gesperrtModule.has(e.modul)).map((e) => e.lehrveranstaltung)
+      eintraege
+        .filter((e) => gesperrtModule.has(e.modul))
+        .map((e) => e.lehrveranstaltung)
     );
     setGesperrteLVs(gesperrte);
   }, [nichtBestandeneLVs, eintraege, moduleMap]);
 
+  // 5) Sortierung: Blockierte LV oben, dann alphabetisch
+  const sortedList = [...gefiltert].sort((a, b) => {
+    const aBlocked = gesperrteLVs.has(a.lehrveranstaltung) ? 1 : 0;
+    const bBlocked = gesperrteLVs.has(b.lehrveranstaltung) ? 1 : 0;
+    if (bBlocked - aBlocked !== 0) {
+      return bBlocked - aBlocked;
+    }
+    // beide gleich im Block-Status -> alphabetisch
+    return a.lehrveranstaltung.localeCompare(b.lehrveranstaltung, 'de', { sensitivity: 'base' });
+  });
 
   return (
     <>
@@ -138,9 +154,20 @@ export default function LehrveranstaltungenPage() {
         {nichtBestandeneLVs.map((lv, i) => {
           const modName = eintraege.find((e) => e.lehrveranstaltung === lv)?.modul;
           return (
-            <span key={i} className={`${styles.bubble} bubble`} onClick={() => toggleLvAuswahl(lv)}>
-              {lv}{modName ? ` (${modName})` : ''}
-              <button className={`${styles.bubbleClose} bubbleClose`} onClick={(e) => { e.stopPropagation(); toggleLvAuswahl(lv); }}>
+            <span
+              key={i}
+              className={`${styles.bubble} bubble`}
+              onClick={() => toggleLvAuswahl(lv)}
+            >
+              {lv}
+              {modName ? ` (${modName})` : ''}
+              <button
+                className={`${styles.bubbleClose} bubbleClose`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleLvAuswahl(lv);
+                }}
+              >
                 &times;
               </button>
             </span>
@@ -149,17 +176,23 @@ export default function LehrveranstaltungenPage() {
       </div>
 
       <ul className={styles.list}>
-        {gefiltert.map((eintrag, idx) => (
+        {sortedList.map((eintrag, idx) => (
           <li
             key={idx}
-            className={`${styles.item} ${gesperrteLVs.has(eintrag.lehrveranstaltung) ? `${styles.blocked} blocked` : ''}`}
+            className={`${styles.item} ${
+              gesperrteLVs.has(eintrag.lehrveranstaltung) ? `${styles.blocked} blocked` : ''
+            }`}
             onClick={() => toggleLvAuswahl(eintrag.lehrveranstaltung)}
           >
-            <p><strong>{eintrag.lehrveranstaltung}</strong></p>
+            <p>
+              <strong>{eintrag.lehrveranstaltung}</strong>
+            </p>
             <p>Modul: {eintrag.modul}</p>
             <p>
               Abhängige Module:{' '}
-              {eintrag.dependentModules.length > 0 ? eintrag.dependentModules.join(', ') : 'Keine'}
+              {eintrag.dependentModules.length > 0
+                ? eintrag.dependentModules.join(', ')
+                : 'Keine'}
             </p>
           </li>
         ))}
