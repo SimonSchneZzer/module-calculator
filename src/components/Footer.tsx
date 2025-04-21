@@ -1,6 +1,5 @@
 'use client';
 
-import { Mali } from 'next/font/google';
 import styles from './footer.module.css';
 
 export function Footer() {
