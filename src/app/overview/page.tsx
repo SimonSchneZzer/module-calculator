@@ -156,6 +156,7 @@ export default function LehrveranstaltungenPage() {
 
   return (
     <>
+      <p>Wähle die Fächer aus, die du nicht geschafft hast, um alle Kurse rekursiv angezeigt zu bekommen, die du dadurch nicht besuchen darfst.</p>
       {/* Suchfeld + Filter-Button nebeneinander */}
       <div className={styles.searchFilterWrapper}>
         <div className={styles.searchContainer}>
@@ -191,28 +192,28 @@ export default function LehrveranstaltungenPage() {
       </div>
 
       <div className={styles.bubbles}>
-      {nichtBestandeneLVs.map((lv, i) => {
-        const modName = eintraege.find(e => e.lehrveranstaltung === lv)?.modul;
-        return (
-          <span
-            key={i}
-            className={`${styles.bubble} bubble`}
-            onClick={() => toggleLvAuswahl(lv)}
-          >
-            {lv}{modName ? ` (${modName})` : ''}
-            <button
-              className={`${styles.bubbleClose} bubbleClose`}
-              onClick={e => {
-                e.stopPropagation();
-                toggleLvAuswahl(lv);
-              }}
+        {nichtBestandeneLVs.map((lv, i) => {
+          const modName = eintraege.find(e => e.lehrveranstaltung === lv)?.modul;
+          return (
+            <span
+              key={i}
+              className={`${styles.bubble} bubble`}
+              onClick={() => toggleLvAuswahl(lv)}
             >
-              ×
-            </button>
-          </span>
-        );
-      })}
-    </div>
+              {lv}{modName ? ` (${modName})` : ''}
+              <button
+                className={`${styles.bubbleClose} bubbleClose`}
+                onClick={e => {
+                  e.stopPropagation();
+                  toggleLvAuswahl(lv);
+                }}
+              >
+                ×
+              </button>
+            </span>
+          );
+        })}
+      </div>
 
       {/* Modal für Semester */}
       {semOpen && (
@@ -255,9 +256,8 @@ export default function LehrveranstaltungenPage() {
               {grouped[Number(key)].map((e, i) => (
                 <li
                   key={i}
-                  className={`${styles.item} ${
-                    gesperrteLVs.has(e.lehrveranstaltung) ? `${styles.blocked} blocked` : ''
-                  }`}
+                  className={`${styles.item} ${gesperrteLVs.has(e.lehrveranstaltung) ? `${styles.blocked} blocked` : ''
+                    }`}
                   onClick={() => toggleLvAuswahl(e.lehrveranstaltung)}
                 >
                   <p><strong>{e.lehrveranstaltung}</strong></p>
