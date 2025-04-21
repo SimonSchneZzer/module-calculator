@@ -141,13 +141,44 @@ export default function LehrveranstaltungenPage() {
 
   return (
     <>
-      <input
-        type="text"
-        placeholder="Suche..."
-        value={suchbegriff}
-        onChange={(e) => setSuchbegriff(e.target.value)}
-        className={styles.searchInput}
-      />
+
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="Suche..."
+          value={suchbegriff}
+          onChange={(e) => setSuchbegriff(e.target.value)}
+          className={styles.searchInput}
+        />
+
+        {suchbegriff ? (
+          <button
+            className={styles.clearButton}
+            onClick={() => setSuchbegriff('')}
+            aria-label="Suchfeld löschen"
+          >
+            ×
+          </button>
+        ) : (
+          <div className={styles.searchIcon} aria-hidden="true">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              width="20"
+              height="20"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-4.35-4.35m2.1-5.65a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+        )}
+      </div>
 
       <div className={styles.bubbles}>
         {nichtBestandeneLVs.map((lv, i) => {
@@ -178,9 +209,8 @@ export default function LehrveranstaltungenPage() {
         {sortedList.map((eintrag, idx) => (
           <li
             key={idx}
-            className={`${styles.item} ${
-              gesperrteLVs.has(eintrag.lehrveranstaltung) ? `${styles.blocked} blocked` : ''
-            }`}
+            className={`${styles.item} ${gesperrteLVs.has(eintrag.lehrveranstaltung) ? `${styles.blocked} blocked` : ''
+              }`}
             onClick={() => toggleLvAuswahl(eintrag.lehrveranstaltung)}
           >
             <p>
